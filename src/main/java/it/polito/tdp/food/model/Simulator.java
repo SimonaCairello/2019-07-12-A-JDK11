@@ -7,8 +7,11 @@ import java.util.PriorityQueue;
 public class Simulator {
 	
 	private Model model;
-	private List<FoodCalories> foods;
+	
 	private PriorityQueue<Event> queue;
+	
+	private List<FoodCalories> foods;
+	
 	private List<Food> processati;
 	private double tempo;
 	
@@ -22,7 +25,7 @@ public class Simulator {
 		this.tempo = 0;
 		this.foods = this.model.getFoodsForK(food);
 		
-		for(int i=0; i<k; i++) {
+		for(int i=0; i<k && i<foods.size(); i++) {
 			this.queue.add(new Event(this.foods.get(i).getFood(), this.foods.get(i).getPeso()));
 			processati.add(this.foods.get(i).getFood());
 		}

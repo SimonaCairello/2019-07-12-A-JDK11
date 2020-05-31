@@ -56,8 +56,12 @@ public class Model {
 		
 		Collections.sort(foods);
 		
-		for(int i=0; i<5; i++)
-			fiveFoods.add(foods.get(i));
+		if(foods.size()<5)
+			fiveFoods.addAll(foods);
+		else {
+			for(int i=0; i<5; i++)
+				fiveFoods.add(foods.get(i));
+		}
 		
 		return fiveFoods;
 	}
