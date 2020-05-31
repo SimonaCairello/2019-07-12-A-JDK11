@@ -3,7 +3,7 @@ package it.polito.tdp.food.model;
 public class FoodCalories implements Comparable<FoodCalories>{
 	
 	private Food food;
-	private double peso;
+	private Double peso;
 	
 	public FoodCalories(Food food, double peso) {
 		this.food = food;
@@ -58,9 +58,9 @@ public class FoodCalories implements Comparable<FoodCalories>{
 
 	@Override
 	public int compareTo(FoodCalories o) {
-		if(this.peso==o.getPeso())
+		if(this.peso.compareTo(o.peso) == 0)
 			return this.food.getDisplay_name().compareTo(o.getFood().getDisplay_name());
-		else return (int) -(this.peso-o.getPeso());
+		else return -(this.peso.compareTo(o.peso));
 	}
 
 }

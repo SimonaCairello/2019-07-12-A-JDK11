@@ -3,7 +3,7 @@ package it.polito.tdp.food.model;
 public class Event implements Comparable<Event>{
 	
 	private Food food;
-	private double time;
+	private Double time;
 	
 	public Event(Food food, double time) {
 		this.food = food;
@@ -58,7 +58,7 @@ public class Event implements Comparable<Event>{
 
 	@Override
 	public int compareTo(Event o) {
-		return (int) (this.getTime()-o.getTime());
+		return this.time.compareTo(o.getTime());
 	}
 	
 	
