@@ -5,8 +5,13 @@
 package it.polito.tdp.food;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.food.model.Food;
+import it.polito.tdp.food.model.FoodCalories;
 import it.polito.tdp.food.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,7 +46,7 @@ public class FoodController {
     private Button btnSimula; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxFood"
-    private ComboBox<?> boxFood; // Value injected by FXMLLoader
+    private ComboBox<Food> boxFood; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
@@ -49,19 +54,70 @@ public class FoodController {
     @FXML
     void doCreaGrafo(ActionEvent event) {
     	txtResult.clear();
-    	txtResult.appendText("Creazione grafo...");
+    	
+    	String s = txtPorzioni.getText();
+    	Integer portions = 0;
+    	
+    	try {
+    		portions = Integer.parseInt(s);
+    	} catch (NumberFormatException e) {
+    		txtResult.appendText("Inserisci un numero intero!\n");
+    		return;
+    	}
+    	
+    	if(portions<0) {
+    		txtResult.appendText("Inserisci un numero maggiore di zero!\n");
+    		return;
+    	}
+    	
+    	Map<Integer, Food> food = new HashMap<>();
+    	food = this.model.getVertices(portions);
+    	
+    	if(food.size()==0) {
+    		txtResult.appendText("Il grafo è vuoto!\n");
+    		return;
+    	}
+    	
+    	this.model.generateGraph();
+    	txtResult.appendText("Grafo creato con successo!\n");
+    	
+    	this.boxFood.getItems().setAll(food.values());
     }
     
     @FXML
     void doCalorie(ActionEvent event) {
     	txtResult.clear();
-    	txtResult.appendText("Analisi calorie...");
+    	
+    	if(this.boxFood.getValue()==null) {
+    		txtResult.appendText("Selezionare un cibo!\n");
+    		return;
+    	}
+    	
+    	List<FoodCalories> fiveFoods = this.model.getFood(this.boxFood.getValue());
+    	for(FoodCalories f : fiveFoods) {
+    		txtResult.appendText(f.toString()+"\n");
+    	}
+    	
+    	txtResult.appendText(this.model.getNumArc()+" "+this.model.getNumVert());
     }
 
     @FXML
     void doSimula(ActionEvent event) {
     	txtResult.clear();
-    	txtResult.appendText("Simulazione...");
+    	
+    	Integer k = 0;
+    	Food f = boxFood.getValue();
+    	
+    	try {
+    		k = Integer.parseInt(txtK.getText());
+    	} catch (NumberFormatException e) {
+    		txtResult.appendText("Inserisci un numero intero!\n");
+    		return;
+    	}
+    	
+    	this.model.simula(k, f);
+    	
+    	txtResult.appendText(this.model.getTotalTime()+"\n"+this.model.getNumProcessati());
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete

@@ -1,6 +1,7 @@
 package it.polito.tdp.food.model;
 
 public class Food {
+	
 	private Integer food_code;
 	private String display_name;
 	
